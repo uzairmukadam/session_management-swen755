@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Secure Session Management</title>
+</head>
+
+<body>
+    <div>
+        <h1>Secure Session Management</h1>
+        <a href="{{ url_for('index') }}">Home</a> | <a href="{{ url_for('login') }}">Login</a>
+        <hr>
+        {% block content %}{% endblock %}
+    </div>
+</body>
+
+</html>
