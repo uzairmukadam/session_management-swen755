@@ -2,14 +2,40 @@
 <html>
 
 <head>
-    <title>Secure Session Management</title>
+    <title>E-Commerce App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function updateCartCount() {
+            fetch('/cart_count')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cart-count').innerText = data.count;
+                });
+        }
+
+        function addToCart(productId) {
+            fetch(`/add_to_cart/${productId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Item added to cart');
+                        updateCartCount();
+                    }
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateCartCount);
+    </script>
 </head>
 
 <body>
-    <div>
-        <h1>Secure Session Management</h1>
-        <a href="{{ url_for('index') }}">Home</a> | <a href="{{ url_for('login') }}">Login</a>
-        <hr>
+    <div class="header">
+        <h1><a href="{{ url_for('index') }}" style="color: white; text-decoration: none;">E-Commerce App</a></h1>
+        <nav>
+            <a href="{{ url_for('cart') }}" class="cart-link">Cart (<span id="cart-count">0</span>)</a>
+        </nav>
+    </div>
+    <div class="content">
         {% block content %}{% endblock %}
     </div>
 </body>

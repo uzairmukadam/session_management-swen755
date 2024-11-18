@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Products</h2>
+<div class="product-list">
+    {% for product in products %}
+    <div class="product-card">
+        <img src="{{ url_for('static', filename='images/' ~ product[1] | replace(' ', '_') ~ '.png') }}"
+            alt="{{ product[1] }}">
+        <h3>{{ product[1] }}</h3>
+        <p>Price: ${{ product[2] }}</p>
+        <button class="add-to-cart-btn" onclick="addToCart({{ product[0] }})">Add to Cart</button>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

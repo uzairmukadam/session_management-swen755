@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.header h1 {
+    margin: 0;
+    padding: 0 20px;
+    display: inline-block;
+}
+
+.header h1 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.header nav {
+    float: right;
+    margin-right: 20px;
+}
+
+.header nav a {
+    color: #fff;
+    padding: 0 10px;
+    text-decoration: none;
+}
+
+.header nav a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    margin-top: 70px;
+    /* Adjust this value if your header height changes */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: calc(25% - 40px);
+    /* Adjust card width as needed */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.product-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.product-card h3 {
+    margin: 0 0 10px 0;
+}
+
+.product-card p {
+    margin: 0 0 10px 0;
+}
+
+.product-card .add-to-cart-btn {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.product-card .add-to-cart-btn:hover {
+    background-color: #218838;
+}
+
+.cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cart .cart-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 80%;
+    /* Adjust card width as needed */
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.checkout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.checkout .checkout-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 80%;
+    /* Adjust card width as needed */
+    box-sizing: border-box;
+    text-align: center;
+}

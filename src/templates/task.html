@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Task Page</h2>
-<p>{{ task_message }}</p>
+<h2>Task</h2>
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% else %}
+{% if message %}
+<p>{{ message }}</p>
+{% else %}
+<form method="post">
+    <input type="submit" value="Perform Task">
+</form>
+{% endif %}
+{% endif %}
 {% endblock %}

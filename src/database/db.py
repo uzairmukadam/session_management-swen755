@@ -1,115 +1,58 @@
 import sqlite3
 import os
 
-DATABASE_PATH = os.path.join(
-    os.path.dirname(__file__), "../../database/message_wall.db"
-)
+DATABASE_PATH = os.path.join(os.path.dirname(__file__), "../../database/ecommerce.db")
 
 
 def init_db():
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
     c.execute(
-        """CREATE TABLE IF NOT EXISTS posts
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT)"""
+        """CREATE TABLE IF NOT EXISTS products
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, price REAL)"""
     )
-    c.execute(
-        """CREATE TABLE IF NOT EXISTS comments
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT, post_id INTEGER, content TEXT,
-                  FOREIGN KEY(post_id) REFERENCES posts(id))"""
-    )
-    c.execute(
-        """CREATE TABLE IF NOT EXISTS users
-                 (id INTEGER PRIMARY KEY AUTOINCREMENT, identifier TEXT, username TEXT, password TEXT, authenticated BOOLEAN, authorized BOOLEAN)"""
-    )
+
+    # Clear existing products to avoid duplicates
+    c.execute("DELETE FROM products")
+
+    # Add dummy products
+    products = [
+        ("Product 1", 19.99),
+        ("Product 2", 29.99),
+        ("Product 3", 39.99),
+        ("Product 4", 49.99),
+        ("Product 5", 59.99),
+        ("Product 6", 69.99),
+        ("Product 7", 79.99),
+        ("Product 8", 89.99),
+        ("Product 9", 99.99),
+        ("Product 10", 109.99),
+    ]
+    c.executemany("INSERT INTO products (title, price) VALUES (?, ?)", products)
+
     conn.commit()
     conn.close()
 
 
-def create_user(identifier):
+def get_all_products():
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    c.execute(
-        "INSERT INTO users (identifier, authenticated, authorized) VALUES (?, ?, ?)",
-        (identifier, False, False),
-    )
-    conn.commit()
+    c.execute("SELECT * FROM products")
+    products = c.fetchall()
     conn.close()
+    return products
 
 
-def get_user_by_identifier(identifier):
+def get_product_by_id(product_id):
     conn = sqlite3.connect(DATABASE_PATH)
     c = conn.cursor()
-    c.execute("SELECT * FROM users WHERE identifier = ?", (identifier,))
-    user = c.fetchone()
+    c.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+    product = c.fetchone()
     conn.close()
-    return {
-        "id": user[0],
-        "identifier": user[1],
-        "username": user[2],
-        "password": user[3],
-        "authenticated": user[4],
-        "authorized": user[5],
-    }
+    return product
 
 
-def verify_user(identifier, username, password):
-    conn = sqlite3.connect(DATABASE_PATH)
-    c = conn.cursor()
-    c.execute(
-        "UPDATE users SET username = ?, password = ?, authenticated = ?, authorized = ? WHERE identifier = ?",
-        (username, password, True, username == "authorized_user", identifier),
-    )
-    conn.commit()
-    conn.close()
-    return True
-
-
-def register_user(identifier, username, password):
-    conn = sqlite3.connect(DATABASE_PATH)
-    c = conn.cursor()
-    c.execute(
-        "UPDATE users SET username = ?, password = ?, authenticated = ?, authorized = ? WHERE identifier = ?",
-        (username, password, True, False, identifier),
-    )
-    conn.commit()
-    conn.close()
-    return True
-
-
-def get_all_posts():
-    conn = sqlite3.connect(DATABASE_PATH)
-    c = conn.cursor()
-    c.execute("SELECT * FROM posts")
-    posts = c.fetchall()
-    conn.close()
-    return posts
-
-
-def get_post(post_id):
-    conn = sqlite3.connect(DATABASE_PATH)
-    c = conn.cursor()
-    c.execute("SELECT * FROM posts WHERE id = ?", (post_id,))
-    post = c.fetchone()
-    c.execute("SELECT * FROM comments WHERE post_id = ?", (post_id,))
-    comments = c.fetchall()
-    conn.close()
-    return {"post": post, "comments": comments}
-
-
-def add_post(title, content):
-    conn = sqlite3.connect(DATABASE_PATH)
-    c = conn.cursor()
-    c.execute("INSERT INTO posts (title, content) VALUES (?, ?)", (title, content))
-    conn.commit()
-    conn.close()
-
-
-def add_comment(post_id, content):
-    conn = sqlite3.connect(DATABASE_PATH)
-    c = conn.cursor()
-    c.execute(
-        "INSERT INTO comments (post_id, content) VALUES (?, ?)", (post_id, content)
-    )
-    conn.commit()
-    conn.close()
+def get_user_by_username(username):
+    # This function would normally interact with a real user database.
+    # For simplicity, we are using a predefined dictionary of users.
+    return users.get(username)

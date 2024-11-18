@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Checkout</h2>
+<div class="checkout">
+    <div class="checkout-card">
+        {% if message %}
+        <p>{{ message }}</p>
+        <p>Total Amount Paid: ${{ total_amount }}</p>
+        {% else %}
+        <p>Total Amount: ${{ total_amount }}</p>
+        <form method="post">
+            <input type="submit" value="Place Order">
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
