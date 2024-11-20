@@ -20,13 +20,19 @@ This project shows how to implement the "Secure Session Management" approach, wh
 
 ## Steps to run the code
 
-### Step 1: Change Directory
+### Step 1: Create Databse directory
+After cloning the project, create a new directory:
+```bash
+mkdir database
+```
+
+### Step 2: Change Directory
 Navigate to the folder containing the project:
 ```bash
 cd src
 ```
 
-### Step 2: Run the Application
+### Step 3: Run the Application
 Execute the following command:
 
 ```bash
