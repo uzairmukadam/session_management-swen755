@@ -4,7 +4,7 @@
 <div class="product-list">
     {% for product in products %}
     <div class="product-card">
-        <img src="{{ url_for('static', filename='images/product.png') }}" alt="{{ product.title }}">
+        <img src="{{ url_for('static', filename='images/product.jpg') }}" alt="{{ product.title }}">
         <h3>{{ product.title }}</h3>
         <p>Price: ${{ product.price }}</p>
         <button class="add-to-cart-btn" onclick="addToCart({{ product.id }})">Add to Cart</button>
