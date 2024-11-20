@@ -23,7 +23,7 @@ This project shows how to implement the "Secure Session Management" approach, wh
 ### Step 1: Change Directory
 Navigate to the folder containing the project:
 ```bash
-cd sec
+cd src
 ```
 
 ### Step 2: Run the Application
@@ -37,10 +37,7 @@ The application will start running at http://127.0.0.1:5000/
 ## What the code does
 This code implements a secure session management system using the Flask framework. It includes key features like user authentication, authorization, session tracking, and basic e-commerce-like functionality. 
 
-Authentication- Users log in with their credentials. The system validates their username and password and establishes a session.
-Session Management- Unique session identifiers are assigned to users upon logging in, which persist across their interactions with the app.
-Authorization- The system enforces role-based access control, granting or denying access to tasks based on user roles.
-Functionality- Users can browse products, add them to a cart, modify cart contents, and proceed to checkout (if authorized).
+Users log in with their credentials. The system validates their username and password and establishes a session. Unique session identifiers are assigned to users upon logging in, which persist across their interactions with the app. The system enforces role-based access control, granting or denying access to tasks based on user roles. Users can browse products, add them to a cart, modify cart contents, and proceed to checkout (if authorized).
 
 - **Login**: 
   Navigate to /login. Use the following credentials:
