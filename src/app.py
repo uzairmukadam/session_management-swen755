@@ -15,10 +15,6 @@ init_db()
 users = {
     "authorized_user": {"password": "password123", "authorized": True},
     "unauthorized_user": {"password": "password123", "authorized": False},
-    "non_existent_user": {
-        "password": "password123",
-        "authorized": False,
-    },  # This user is not registered
 }
 
 
