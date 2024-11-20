@@ -15,7 +15,6 @@ def init_db():
     # Clear existing products to avoid duplicates
     c.execute("DELETE FROM products")
 
-    # Add dummy products
     products = [
         ("Product 1", 19.99),
         ("Product 2", 29.99),
@@ -40,7 +39,6 @@ def get_all_products():
     c.execute("SELECT * FROM products")
     products = c.fetchall()
     conn.close()
-    # Convert product tuples to dictionaries
     products_dicts = [{"id": p[0], "title": p[1], "price": p[2]} for p in products]
     return products_dicts
 
@@ -55,6 +53,4 @@ def get_product_by_id(product_id):
 
 
 def get_user_by_username(username):
-    # This function would normally interact with a real user database.
-    # For simplicity, we are using a predefined dictionary of users.
     return users.get(username)

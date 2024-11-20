@@ -51,7 +51,6 @@ def index():
 @login_required
 def products():
     products = get_all_products()
-    print(f"Products: {products}")  # Debug print to check products data
     return render_template("products.html", products=products)
 
 
@@ -106,7 +105,7 @@ def cart():
                         f"Invalid quantity value for item ID {item_id}. Skipping update."
                     )
             else:
-                updated_cart.append(item)  # Keep item as is if not in form
+                updated_cart.append(item)
         session["cart"] = updated_cart
         print(f"Updated session (cart): {session}")  # Print session details
 
@@ -127,7 +126,6 @@ def checkout():
         )
 
         if request.method == "POST":
-            # Process the checkout (e.g., save order to the database, clear the cart)
             session["cart"] = []
             print(f"Updated session (checkout): {session}")  # Print session details
             return render_template(
@@ -187,7 +185,6 @@ def task():
     user = users.get(session["username"])
     if user and user["authorized"]:
         if request.method == "POST":
-            # Perform the task
             print(
                 f"Task performed by {session['username']}. Session: {session}"
             )  # Print session details
