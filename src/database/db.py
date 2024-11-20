@@ -40,7 +40,9 @@ def get_all_products():
     c.execute("SELECT * FROM products")
     products = c.fetchall()
     conn.close()
-    return products
+    # Convert product tuples to dictionaries
+    products_dicts = [{"id": p[0], "title": p[1], "price": p[2]} for p in products]
+    return products_dicts
 
 
 def get_product_by_id(product_id):
