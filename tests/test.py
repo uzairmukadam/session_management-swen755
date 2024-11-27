@@ -3,6 +3,7 @@ import os
 from flask import Flask, session
 from src.app import app, users
 from src.database.db import init_db, DATABASE_PATH
+from datetime import timedelta
 
 
 class TestSessionManagement(unittest.TestCase):
@@ -39,6 +40,33 @@ class TestSessionManagement(unittest.TestCase):
             302,
             "Flask project should be running and redirect to login page",
         )
+
+    def test_session_timeout(self):
+        with self.app as client:
+            # Log in and set a short session timeout
+            client.post(
+                "/login", data=dict(username="authorized_user", password="password123")
+            )
+            with client.session_transaction() as sess:
+                sess["permanent"] = True
+                app.permanent_session_lifetime = timedelta(seconds=1)
+
+            # Wait for the session to expire
+            import time
+
+            time.sleep(2)
+
+            # Perform an action after the session should have expired
+            response = client.get("/products")
+            if response.status_code == 302:
+                print("test_session_timeout: PASSED")
+            else:
+                print("test_session_timeout: FAILED")
+            self.assertEqual(
+                response.status_code,
+                302,
+                "User should be redirected to login page after session timeout",
+            )
 
 
 if __name__ == "__main__":
