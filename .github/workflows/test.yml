@@ -25,14 +25,8 @@ jobs:
       run: |
           mkdir database
 
-    - name: Show directories
-      run: |
-        echo "Listing all the directories in root"
-        ls -R
-
     - name: Run tests
       run: |
-        coverage run -m unittest discover -s tests
-        coverage report
+        python -m unnittest discover -s tests
       env:
         PYTHONPATH: src
