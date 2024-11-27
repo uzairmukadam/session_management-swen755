@@ -48,11 +48,6 @@ class TestSessionManagement(unittest.TestCase):
                 "/login", data=dict(username="authorized_user", password="password123")
             )
 
-            # Set session lifetime to a very short time
-            with self.app.session_transaction() as sess:
-                sess.permanent = True
-                app.permanent_session_lifetime = timedelta(seconds=1)
-
             # Wait for the session to expire
             import time
 
