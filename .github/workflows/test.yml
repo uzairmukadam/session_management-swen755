@@ -27,6 +27,6 @@ jobs:
 
     - name: Run tests
       run: |
-        python -m unnittest discover -s tests
+        python -m unittest discover -s tests
       env:
         PYTHONPATH: src
