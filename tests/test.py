@@ -21,11 +21,19 @@ class TestSessionManagement(unittest.TestCase):
 
     def test_database_file_exists(self):
         # Check if the database file exists
+        if os.path.exists(DATABASE_PATH):
+            print("test_database_file_exists: PASSED")
+        else:
+            print("test_database_file_exists: FAILED")
         self.assertTrue(os.path.exists(DATABASE_PATH), "Database file should exist")
 
     def test_flask_project_running(self):
         # Check if the Flask app can handle a simple request
         response = self.app.get("/")
+        if response.status_code == 302:
+            print("test_flask_project_running: PASSED")
+        else:
+            print("test_flask_project_running: FAILED")
         self.assertEqual(
             response.status_code,
             302,
