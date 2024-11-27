@@ -21,6 +21,10 @@ jobs:
         pip install flask
         pip install coverage
 
+    - name: Create database directory
+      run: |
+          mkdir database
+
     - name: Show directories
       run: |
         echo "Listing all the directories in root"
