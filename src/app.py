@@ -7,9 +7,12 @@ from database.db import (
     get_user_by_username,
 )
 import uuid
+from datetime import timedelta
 
 app = Flask(__name__)
 app.secret_key = "super_secret_key"
+# session lifetime defined manually to introduce an architectural break
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=30)
 init_db()
 
 users = {
