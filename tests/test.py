@@ -4,6 +4,7 @@ from flask import Flask, session
 from src.app import app, users
 from src.database.db import init_db, DATABASE_PATH
 
+
 class TestSessionManagement(unittest.TestCase):
 
     @classmethod
@@ -18,5 +19,19 @@ class TestSessionManagement(unittest.TestCase):
         with app.app_context():
             init_db()
 
-if __name__ == '__main__':
+    def test_database_file_exists(self):
+        # Check if the database file exists
+        self.assertTrue(os.path.exists(DATABASE_PATH), "Database file should exist")
+
+    def test_flask_project_running(self):
+        # Check if the Flask app can handle a simple request
+        response = self.app.get("/")
+        self.assertEqual(
+            response.status_code,
+            302,
+            "Flask project should be running and redirect to login page",
+        )
+
+
+if __name__ == "__main__":
     unittest.main()
