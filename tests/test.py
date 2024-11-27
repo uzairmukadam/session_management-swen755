@@ -47,8 +47,10 @@ class TestSessionManagement(unittest.TestCase):
             client.post(
                 "/login", data=dict(username="authorized_user", password="password123")
             )
-            with client.session_transaction() as sess:
-                sess["permanent"] = True
+
+            # Set session lifetime to a very short time
+            with self.app.session_transaction() as sess:
+                sess.permanent = True
                 app.permanent_session_lifetime = timedelta(seconds=1)
 
             # Wait for the session to expire
@@ -56,7 +58,7 @@ class TestSessionManagement(unittest.TestCase):
 
             time.sleep(2)
 
-            # Perform an action after the session should have expired
+            # Try to access a protected route after the session should have expired
             response = client.get("/products")
             if response.status_code == 302:
                 print("test_session_timeout: PASSED")
