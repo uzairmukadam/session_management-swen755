@@ -3,6 +3,7 @@ import os
 from flask import Flask, session
 from src.app import app, users
 from src.database.db import init_db, DATABASE_PATH
+from datetime import timedelta
 
 
 class TestSessionManagement(unittest.TestCase):
@@ -39,6 +40,18 @@ class TestSessionManagement(unittest.TestCase):
             302,
             "Flask project should be running and redirect to login page",
         )
+
+    def test_authentication_required(self):
+        with self.app as client:
+            # Try to add a product to the cart without logging in
+            response = client.get("/add_to_cart/1")
+
+            # Check if the user is redirected to the login page
+            self.assertEqual(
+                response.status_code,
+                302,
+                "User should be redirected to login page when not authenticated",
+            )
 
 
 if __name__ == "__main__":
