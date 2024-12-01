@@ -41,6 +41,42 @@ class TestSessionManagement(unittest.TestCase):
             "Flask project should be running and redirect to login page",
         )
 
+    def test_authentication_required(self):
+        with self.app as client:
+            # Try to add a product to the cart without logging in
+            response = client.get("/add_to_cart/1")
+
+            # Check if the user is redirected to the login page
+            self.assertEqual(
+                response.status_code,
+                302,
+                "User should be redirected to login page when not authenticated",
+            )
+
+    def test_unique_session_id(self):
+        with self.app as client:
+            # Log in the first time
+            client.post(
+                "/login", data=dict(username="authorized_user", password="password123")
+            )
+            old_session_id = session.get("session_id")
+
+            # Log out
+            client.get("/logout")
+
+            # Log in the second time
+            client.post(
+                "/login", data=dict(username="authorized_user", password="password123")
+            )
+            new_session_id = session.get("session_id")
+
+            # Check if the session ID is different
+            self.assertNotEqual(
+                old_session_id,
+                new_session_id,
+                "Session ID should be unique for each login",
+            )
+
     def test_session_timeout(self):
         with self.app as client:
             # Log in and set a short session timeout
