@@ -41,6 +41,18 @@ class TestSessionManagement(unittest.TestCase):
             "Flask project should be running and redirect to login page",
         )
 
+    def test_authentication_required(self):
+        with self.app as client:
+            # Try to add a product to the cart without logging in
+            response = client.get("/add_to_cart/1")
+
+            # Check if the user is redirected to the login page
+            self.assertEqual(
+                response.status_code,
+                302,
+                "User should be redirected to login page when not authenticated",
+            )
+
     def test_unique_session_id(self):
         with self.app as client:
             # Log in the first time
@@ -63,6 +75,30 @@ class TestSessionManagement(unittest.TestCase):
                 old_session_id,
                 new_session_id,
                 "Session ID should be unique for each login",
+            )
+
+    def test_session_timeout(self):
+        with self.app as client:
+            # Log in and set a short session timeout
+            client.post(
+                "/login", data=dict(username="authorized_user", password="password123")
+            )
+
+            # Wait for the session to expire
+            import time
+
+            time.sleep(2)
+
+            # Try to access a protected route after the session should have expired
+            response = client.get("/products")
+            if response.status_code == 302:
+                print("test_session_timeout: PASSED")
+            else:
+                print("test_session_timeout: FAILED")
+            self.assertEqual(
+                response.status_code,
+                302,
+                "User should be redirected to login page after session timeout",
             )
 
 
