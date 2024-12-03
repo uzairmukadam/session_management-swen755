@@ -41,6 +41,22 @@ class TestSessionManagement(unittest.TestCase):
             "Flask project should be running and redirect to login page",
         )
 
+  def test_data_encryption(self):
+        # Insert a new value into the database
+        with self.app as client:
+            client.post("/add_to_cart/1")
+
+        # Read the raw data from the database file
+        with open(DATABASE_PATH, "rb") as f:
+            raw_data = f.read()
+
+        # Check if sensitive information is not in plaintext
+        self.assertNotIn(
+            b"Product 1",
+            raw_data,
+            "Sensitive information should be encrypted in the database",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
