@@ -22,26 +22,110 @@ class TestSessionManagement(unittest.TestCase):
 
     def test_database_file_exists(self):
         # Check if the database file exists
-        if os.path.exists(DATABASE_PATH):
-            print("test_database_file_exists: PASSED")
+        result = os.path.exists(DATABASE_PATH)
+        if result:
+            print("[PASSED] test_database_file_exists: Database file exists.")
         else:
-            print("test_database_file_exists: FAILED")
-        self.assertTrue(os.path.exists(DATABASE_PATH), "Database file should exist")
+            print("[FAILED] test_database_file_exists: Database file does not exist.")
+        self.assertTrue(result, "Database file should exist")
 
-  def test_flask_project_running(self):
+    def test_flask_project_running(self):
         # Check if the Flask app can handle a simple request
         response = self.app.get("/")
         if response.status_code == 302:
-            print("test_flask_project_running: PASSED")
+            print(
+                "[PASSED] test_flask_project_running: Flask project is running and redirected to login page."
+            )
         else:
-            print("test_flask_project_running: FAILED")
+            print(
+                "[FAILED] test_flask_project_running: Flask project is not running correctly."
+            )
         self.assertEqual(
             response.status_code,
             302,
             "Flask project should be running and redirect to login page",
         )
 
-  def test_data_encryption(self):
+    def test_authentication_required(self):
+        with self.app as client:
+            # Try to add a product to the cart without logging in
+            response = client.get("/add_to_cart/1")
+            if response.status_code == 302:
+                print(
+                    "[PASSED] test_authentication_required: Redirected to login page when not authenticated."
+                )
+            else:
+                print(
+                    "[FAILED] test_authentication_required: Did not redirect to login page when not authenticated."
+                )
+            # Check if the user is redirected to the login page
+            self.assertEqual(
+                response.status_code,
+                302,
+                "User should be redirected to login page when not authenticated",
+            )
+
+    def test_unique_session_id(self):
+        with self.app as client:
+            # Log in the first time
+            client.post(
+                "/login", data=dict(username="authorized_user", password="password123")
+            )
+            old_session_id = session.get("session_id")
+
+            # Log out
+            client.get("/logout")
+
+            # Log in the second time
+            client.post(
+                "/login", data=dict(username="authorized_user", password="password123")
+            )
+            new_session_id = session.get("session_id")
+
+            # Check if the session ID is different
+            if old_session_id != new_session_id:
+                print(
+                    "[PASSED] test_unique_session_id: Session ID is unique for each login."
+                )
+            else:
+                print(
+                    "[FAILED] test_unique_session_id: Session ID is not unique for each login."
+                )
+            self.assertNotEqual(
+                old_session_id,
+                new_session_id,
+                "Session ID should be unique for each login",
+            )
+
+    def test_session_timeout(self):
+        with self.app as client:
+            # Log in and set a short session timeout
+            client.post(
+                "/login", data=dict(username="authorized_user", password="password123")
+            )
+
+            # Wait for the session to expire
+            import time
+
+            time.sleep(2)
+
+            # Try to access a protected route after the session should have expired
+            response = client.get("/products")
+            if response.status_code == 302:
+                print(
+                    "[PASSED] test_session_timeout: User redirected to login page after session timeout."
+                )
+            else:
+                print(
+                    "[FAILED] test_session_timeout: User not redirected to login page after session timeout."
+                )
+            self.assertEqual(
+                response.status_code,
+                302,
+                "User should be redirected to login page after session timeout",
+            )
+
+    def test_data_encryption(self):
         # Insert a new value into the database
         with self.app as client:
             client.post("/add_to_cart/1")
@@ -51,6 +135,14 @@ class TestSessionManagement(unittest.TestCase):
             raw_data = f.read()
 
         # Check if sensitive information is not in plaintext
+        if b"Product 1" not in raw_data:
+            print(
+                "[PASSED] test_data_encryption: Sensitive information is not in plaintext."
+            )
+        else:
+            print(
+                "[FAILED] test_data_encryption: Sensitive information is in plaintext."
+            )
         self.assertNotIn(
             b"Product 1",
             raw_data,
