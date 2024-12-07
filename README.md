@@ -4,19 +4,19 @@ This project focuses on Secure Session Management while implementing an e-commer
 
 ## Features
 - Secure user authentication with role-based access control.
-- Unique session management with configurable timeouts.
+- Unique session management.
 - Product browsing, cart management, and checkout functionality.
 - Restriction of unauthorized access to sensitive operations.
-- Testing for session ID uniqueness and timeout behaviors.
+- Testing for architectural breakers.
 - Role-based access control with three types of users:
   - Authorized user: Can perform the task.
   - Unauthorized user: Cannot perform the task.
   - Unauthenticated user: Cannot access restricted areas.
  
 ## Architecture Breakers
-- Predictable Session IDs: In order to take control of user sessions, attackers may be able to estimate session IDs. To avoid this, uuid.uuid4() is used to produce unique session IDs.
+- Predictable Session IDs: In order to take control of user sessions, attackers may be able to estimate session IDs. To avoid this, a unique session ID is generated for every user authentication.
 
-- Mismanagement of Session Timeouts: Sessions may run too long or end too soon, risking usability and security. A session timeout that has been configured guarantees expiry after 30 minutes.
+- Mismanagement of Session Timeouts: Sessions may run too long or end too soon, risking usability and security. Having long session timeout period can allow attackers to hijack a session easily.
 
 - Weak Encryption: There is a security concern because sensitive session data, like cart contents, are saved in plaintext. Session data is not currently encrypted, making it susceptible to possible leaks.
 
