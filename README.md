@@ -1,16 +1,36 @@
 # Secure Session Management System
 
-This project shows how to implement the "Secure Session Management" approach, which includes web application authorization, session handling, and authentication. The database is **SQLite**, and the system is constructed with **Flask**, a lightweight Python web framework.
+This project focuses on Secure Session Management while implementing an e-commerce website with features like product browsing, cart management, and checkout. To provide a safe and easy buying experience, it exhibits strong session handling, user authentication, and authorization procedures.
 
-### Features
-- Authentication of users with unique session identifiers.
-- Authorization checks for user operations.
-- Persistent session management for tracking user actions.
-- Simple e-commerce functionalities like viewing products, adding to a cart, and performing a task.
+## Features
+- Secure user authentication with role-based access control.
+- Unique session management with configurable timeouts.
+- Product browsing, cart management, and checkout functionality.
+- Restriction of unauthorized access to sensitive operations.
+- Testing for session ID uniqueness and timeout behaviors.
 - Role-based access control with three types of users:
   - Authorized user: Can perform the task.
   - Unauthorized user: Cannot perform the task.
   - Unauthenticated user: Cannot access restricted areas.
+ 
+## Architecture Breakers
+- Predictable Session IDs: In order to take control of user sessions, attackers may be able to estimate session IDs. To avoid this, uuid.uuid4() is used to produce unique session IDs.
+
+- Mismanagement of Session Timeouts: Sessions may run too long or end too soon, risking usability and security. A session timeout that has been configured guarantees expiry after 30 minutes.
+
+- Weak Encryption: There is a security concern because sensitive session data, like cart contents, are saved in plaintext. Session data is not currently encrypted, making it susceptible to possible leaks.
+
+- Inadequate Authorization: Unauthorized users may gain access to tasks or checkout areas, which could be dangerous for security. To guarantee that only authorized users are given access, role-based access control is put into place.
+
+
+## Test Cases
+The application includes a robust testing suite to validate key aspects of the implementation, focusing on architecture breakers.
+
+- Session ID Uniqueness:
+This test aims to avoid session reuse or hijacking by making sure that every user login creates a fresh, distinct session ID. In order to validate that the session IDs provided to each session are distinct, the test scenario requires logging in twice using the same credentials. It is expected that every login would generate a distinct session ID, guaranteeing strong session management and security.
+
+- Session Timeout:
+This test's objective is to confirm that sessions end appropriately after the specified timeout interval. Here, the user logs in and watches for the session to end. The user tries to access a protected route after the timeout has ended. In order to ensure secure session management, it is expected that the system will identify the expired session and reroute the user to the login page.
 
 
 ## Prerequisites
@@ -40,10 +60,16 @@ python -m app
 ```
 The application will start running at http://127.0.0.1:5000/
 
-## What the code does
-This code implements a secure session management system using the Flask framework. It includes key features like user authentication, authorization, session tracking, and basic e-commerce-like functionality. 
+### Step 4: Test the Application
+Run the test suite using:
+```bash
+python test.py
+```
 
-Users log in with their credentials. The system validates their username and password and establishes a session. Unique session identifiers are assigned to users upon logging in, which persist across their interactions with the app. The system enforces role-based access control, granting or denying access to tasks based on user roles. Users can browse products, add them to a cart, modify cart contents, and proceed to checkout (if authorized).
+## What the code does
+This code uses the Flask framework to construct a secure session management system. Key capabilities like session monitoring, user authentication, authorization, and fundamental e-commerce-type functionalities are all included.
+
+Users enter their login information. The system creates a session after verifying their login credentials. Users are given unique session identities when they log in, and these are maintained throughout their app activities. Role-based access control is enforced by the system, which grants or denies tasks access according to user roles. Product browsing, cart addition, content modification, and checkout (if authorized) are all available to users.
 
 - **Login**: 
   Navigate to /login. Use the following credentials:
@@ -73,3 +99,4 @@ Logout by visiting /logout.
 - **Flask**: Web framework for routing and application logic.
 - **SQLite**: Embedded database for storing product data.
 - **uuid**: Used to generate unique session identifiers.
+- **Unittest**: Framework for writing and running tests.
