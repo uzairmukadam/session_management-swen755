@@ -109,12 +109,13 @@ python test.py
 ```
 
 ## What the code does
-This code uses the Flask framework to construct a secure session management system. Key capabilities like session monitoring, user authentication, authorization, and fundamental e-commerce-type functionalities are all included.
 
-Users enter their login information. The system creates a session after verifying their login credentials. Users are given unique session identities when they log in, and these are maintained throughout their app activities. Role-based access control is enforced by the system, which grants or denies tasks access according to user roles. Product browsing, cart addition, content modification, and checkout (if authorized) are all available to users.
+The code here uses the Flask framework to build a secure session management system. Key features of the code include session tracking, user authentication and authorization, and basic e-commerce type capabilities.
+
+The user logs in to the app with his username and password. Upon validating the login credentials, the system creates a session for the user. In addition, unique session identities for users are created when users log in, which persist over their application activities. Tasks are granted or rejected, based on user roles enforced by the system. View the product, add items in the cart, modify the content, and checkout if authorized by the user.
 
 - **Login**: 
-  Navigate to /login. Use the following credentials:
+  Access /login. Use the following credentials:
   - Authorized User:
     Username: authorized_user
     Password: password123
@@ -126,16 +127,16 @@ Users enter their login information. The system creates a session after verifyin
 After logging in, visit /products to view and add products to your cart.
 
 - **Cart Management**:
-Access the cart at /cart to modify quantities or remove items.
+The cart is accessible at /cart, where quantities can be changed or items can be removed.
 
 - **Checkout**:
-Authorized users can checkout at /checkout. Unauthorized users will receive an error message.
+Authorized users can checkout at /checkout. Unauthorized users are shown an error message.
 
 - **Task Handling**:
-Only authorized users can perform tasks at /task.
+Tasks at /task can only be carried out by an authorized user.
 
 - **Logout**:
-Logout by visiting /logout.
+Log out using /logout.
 
 ## Frameworks and Libraries Used
 - **Flask**: Web framework for routing and application logic.
