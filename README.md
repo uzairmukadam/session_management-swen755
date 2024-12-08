@@ -26,11 +26,41 @@ This project focuses on Secure Session Management while implementing an e-commer
 ## Test Cases
 The application includes a robust testing suite to validate key aspects of the implementation, focusing on architecture breakers.
 
-- Session ID Uniqueness:
-This test aims to avoid session reuse or hijacking by making sure that every user login creates a fresh, distinct session ID. In order to validate that the session IDs provided to each session are distinct, the test scenario requires logging in twice using the same credentials. It is expected that every login would generate a distinct session ID, guaranteeing strong session management and security.
+1. **Testing Database Existence**
 
-- Session Timeout:
-This test's objective is to confirm that sessions end appropriately after the specified timeout interval. Here, the user logs in and watches for the session to end. The user tries to access a protected route after the timeout has ended. In order to ensure secure session management, it is expected that the system will identify the expired session and reroute the user to the login page.
+Test Name: test_database_file_exists
+
+This test verifies that the ecommerce.db SQLite database file is successfully generated during initialization. Even though it has nothing to do with an architectural breaker, the application may become unusable if the database is missing. The existence of the database is an essential requirement for the smooth functioning of the program.
+
+2. **Testing Flask Application Activity**
+
+Test Name: test_flask_project_running
+
+This test confirms that the Flask application is set up successfully and can handle simple requests like the root and route. This guarantees the fundamental functionality of the application, even when it has nothing to do with an architectural breaker. The application may not be able to serve requests if Flask setup is incorrect.
+
+3. **Testing Authentication Enforcement**
+
+Test Name: test_authentication_required
+
+This test makes sure that protected routes enforce authentication. Failure to enforce authentication can result in unauthorized access, violating security principles.  The current test case correctly handles authentication enforcement, ensuring security. This is one of the architectural breaker.
+
+4. **Testing Unique Session ID**
+
+Test Name: test_unique_session_id
+
+This test confirms that each user login generates a unique session ID and that previous session IDs are invalidated when a user logs out. The confidentiality and integrity of session management could be affected by session fixation attacks resulting from a lack of unique session IDs. This architectural breaker is successfully avoided by the program by utilizing uuid.uuid4() to generate unique session IDs.
+
+5. **Testing Session Timeout**
+
+Test Name: test_session_timeout
+
+This test determines if user sessions end after the timeout duration that has been set. Sessions can continue forever without session timeouts, which raises the possibility of unwanted access. Since the application's session length is set to 30 minutes, this test intentionally fails, which could be an architectural breaker. Setting up suitable timeouts reduces vulnerability to attacks.
+
+6. **Testing Data Encryption**
+
+Test Name: test_data_encryption
+
+This test confirms that sensitive data, including session and product information, is stored securely (e.g., using encryption). Data security and confidentiality are violated if sensitive information is kept in plaintext, which allows attackers with database access to extract private information. The lack of encryption implementation in the program is one of the architectural breaker, which is why this test fails.
 
 
 ## Prerequisites
