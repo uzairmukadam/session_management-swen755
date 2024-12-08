@@ -62,6 +62,18 @@ Test Name: test_data_encryption
 
 This test confirms that sensitive data, including session and product information, is stored securely (e.g., using encryption). Data security and confidentiality are violated if sensitive information is kept in plaintext, which allows attackers with database access to extract private information. The lack of encryption implementation in the program is one of the architectural breaker, which is why this test fails.
 
+## Implementation Overview
+
+**app.py:** 
+This mainly contains all the application logic. Define routes for authentication, products, shopping cart, and checkout. It has a strong system of session controls with session IDs which can be modified for timeouts. Control of authentication is done using decorators.
+
+**db.py:** 
+The file contains everything based on database management. Creates an SQLite database that allows for product data to be kept within.
+
+**test.py:** 
+This is solely the testing framework. Contains test scripts that purpose is to ensure session control is enabled and the application is securely working.
+
+
 
 ## Prerequisites
 - **Python 3.7 or higher**  
